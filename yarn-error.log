@@ -1,0 +1,50 @@
+Arguments: 
+  /Users/mac/.nvm/versions/node/v12.13.0/bin/node /usr/local/Cellar/yarn/1.19.2/libexec/bin/yarn.js add bitcoinjs-lib
+
+PATH: 
+  /Users/mac/.nvm/versions/node/v12.13.0/bin:/Users/mac/Library/Android/sdk/platform-tools:/Users/mac/downloads/Flutter/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/mac/Library/Android/sdk/platform-tools:/Users/mac/downloads/Flutter/bin:/Users/mac/Desktop/Flutter/tools/flutter/bin:/Users/mac/Desktop/Flutter/tools/flutter/bin
+
+Yarn version: 
+  1.19.2
+
+Node version: 
+  12.13.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/yarn: ETIMEDOUT
+      at Timeout._onTimeout (/usr/local/Cellar/yarn/1.19.2/libexec/lib/cli.js:141246:19)
+      at listOnTimeout (internal/timers.js:531:17)
+      at processTimers (internal/timers.js:475:7)
+
+npm manifest: 
+  {
+    "name": "private-blockchain",
+    "version": "1.0.0",
+    "description": "Building of a private blockchain",
+    "main": "app.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/AhhEagle/private-blockchain.git"
+    },
+    "author": "Olateju Aliyu Oladimeji",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/AhhEagle/private-blockchain/issues"
+    },
+    "homepage": "https://github.com/AhhEagle/private-blockchain#readme",
+    "dependencies": {
+      "yarn": "^1.22.10"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
