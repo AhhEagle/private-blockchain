@@ -84,7 +84,11 @@ class Blockchain {
      */
     requestMessageOwnershipVerification(address) {
         return new Promise((resolve) => {
-            
+            const message = `${address}:${new Date()
+                .getTime()
+                .toString()
+                .slice(0, -3)}:starRegistry`;
+              resolve(message);
         });
     }
 
@@ -108,6 +112,25 @@ class Blockchain {
     submitStar(address, message, signature, star) {
         let self = this;
         return new Promise(async (resolve, reject) => {
+            const requestTime =  parseInt(message.split(':')[1]);
+            const currentTime = parseInt(
+                new Date()
+                  .getTime()
+                  .toString()
+                  .slice(0, -3)
+              );
+           if ((currentTime - requestTime) >= (5*60)){
+               const isValid = bitcoinMessage.verify(message, address, signature);
+               if(isValid){
+                   const block = new BlockClass.Block({ owner: address, star: star });
+                   const addedBlock = await self._addBlock(block);
+                    resolve(addedBlock);
+               } else{
+                   reject("Invalid message");
+               }
+           } else{
+               reject("Request times out after 5 minutes")
+           }
             
         });
     }
@@ -121,6 +144,7 @@ class Blockchain {
     getBlockByHash(hash) {
         let self = this;
         return new Promise((resolve, reject) => {
+            resolve(self.chain.filter(element => element.hash === hash)[0]);
            
         });
     }
@@ -152,6 +176,15 @@ class Blockchain {
         let self = this;
         let stars = [];
         return new Promise((resolve, reject) => {
+            self.chain.forEach(element =>{
+                const value =  element.getBData()
+                if(value){
+                   if (value.owner === address){
+                       stars.push(value);
+                   }
+                }
+            });
+            resolve(stars);
             
         });
     }
@@ -166,6 +199,22 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
+            for(let block of self.chain){
+                if(block.validate()){
+                    if(block.height > 0){
+                        let previousBlock = self.chain.filter(el => el.height === block.height - 1)[0];
+                        if(block.previousBlockHash !== previousBlock.hash){
+                            errorLog.push(`${block.height} doesn't match `);
+                        }
+                    }
+                } else {
+                    errorLog.push(`Invalid Block`);
+                }
+            }
+            if(errorLog.length > 0){
+                resolve(errorLog);
+            }
+            resolve(`No errors found`); 
             
         });
     }
