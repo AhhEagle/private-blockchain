@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Building of a private blockchain",
   "main": "app.js",
+  "type": "module",
   "scripts": {
+    "build": "babel src -d dist",
+    "start": "npm run build && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +20,11 @@
   },
   "homepage": "https://github.com/AhhEagle/private-blockchain#readme",
   "dependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
     "bitcoinjs-lib": "^5.2.0",
     "bitcoinjs-message": "^2.2.0",
     "body-parser": "^1.19.0",
