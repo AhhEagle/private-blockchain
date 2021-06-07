@@ -155,8 +155,6 @@ var Blockchain = function () {
             var block = new _block2.default.Block({ star: star });
             block.owner = address;
             var addedBlock = await self._addBlock(block);
-            console.log(addedBlock);
-            console.log(addedBlock.owner);
             resolve(addedBlock);
           } else {
             reject("Invalid message");

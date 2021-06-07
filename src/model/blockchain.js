@@ -211,25 +211,17 @@ class Blockchain {
     let self = this;
     let errorLog = [];
     return new Promise(async (resolve, reject) => {
-      for (let block of self.chain) {
-        if (block.validate()) {
-          if (block.height > 0) {
-            let previousBlock = self.chain.filter(
-              el => el.height === block.height - 1
-            )[0];
-            console.log(previousBlock);
-            if (block.previousBlockHash !== previousBlock.hash) {
-              errorLog.push(`${block.height} doesn't match `);
+      self.chain.forEach(block => {
+        if(!block.validate()){
+           errorLog.push('Block not verified');
+        } else{
+          if(block.previousBlockHash !== 
+            self.chain[self.chain.length -1].hash){
+              errorLog.push('Block not verified')
             }
-          }
-        } else {
-          errorLog.push(`Invalid Block`);
+            resolve(errorLog);
         }
-      }
-      if (errorLog.length > 0) {
-        resolve(errorLog);
-      }
-      resolve(`No errors found`);
+      })
     });
   }
 }

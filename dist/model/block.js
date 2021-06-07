@@ -36,7 +36,7 @@ var Block = function () {
         // data = star ? {...data, star} : data;
         this.hash = null; // Hash of the block
         this.height = 0; // Block Height (consecutive number of each block)
-        this.body = Buffer(JSON.stringify(data)).toString('hex'); // Will contain the transactions stored in the block, by default it will encode the data
+        this.body = Buffer.from(JSON.stringify(data)).toString('hex'); // Will contain the transactions stored in the block, by default it will encode the data
         this.time = 0; // Timestamp for the Block creation
         this.previousBlockHash = null; // Reference to the previous Block Hash
     }
@@ -65,7 +65,7 @@ var Block = function () {
                 // Recalculate the hash of the 
                 self.hash = (0, _sha2.default)(JSON.stringify(self)).toString();
                 // Comparing if the hashes changed
-                currentBlockHash === self.hash ? resolve(currentBlockHash === self.hash) : reject(false);
+                currentBlockHash === self.hash ? resolve(true) : reject(false);
                 // Returning the Block is not valid
 
                 // Returning the Block is valid
@@ -94,7 +94,7 @@ var Block = function () {
                 // Parse the data to an object to be retrieve.
                 var res = JSON.parse(datares);
                 // Resolve with the data if the object isn't the Genesis block
-                self.height > 0 ? resolve(res) : '';
+                self.height > 0 ? resolve(res) : reject('Error');
             });
         }
     }]);
