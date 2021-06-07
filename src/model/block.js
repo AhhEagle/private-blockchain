@@ -47,7 +47,7 @@ class Block {
             // Recalculate the hash of the 
             self.hash =  SHA256(JSON.stringify(self)).toString();
             // Comparing if the hashes changed
-            currentBlockHash === self.hash ? resolve(currentBlockHash === self.hash) : reject(false);
+            currentBlockHash === self.hash ? resolve(true) : reject(false);
             // Returning the Block is not valid
             
             // Returning the Block is valid
@@ -74,7 +74,7 @@ class Block {
         // Parse the data to an object to be retrieve.
         let res = JSON.parse(datares);
         // Resolve with the data if the object isn't the Genesis block
-        self.height > 0 ? resolve(res) : '';
+        self.height > 0 ? resolve(res) : reject(new Error('Error'));
         
     })
     }
