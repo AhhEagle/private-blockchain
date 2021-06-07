@@ -6,6 +6,13 @@ You can either fork or clone this project to your local machine and open it with
 
 ### Dependencies
 The dependecies utilised includes:
+- Express
+- bitcoinjs-lib
+- bitcoinjs-message
+- crypto-js
+- morgan
+- body-parser
+- hex2ascii
 
 
 ### Endpoints
