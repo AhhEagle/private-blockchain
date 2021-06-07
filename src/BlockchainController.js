@@ -103,12 +103,14 @@ class BlockchainController {
                 const address = req.params.address;
                 try {
                     let stars = await this.blockchain.getStarsByWalletAddress(address);
+        
                     if(stars){
                         return res.status(200).json(stars);
                     } else {
                         return res.status(404).send("Block Not Found!");
                     }
                 } catch (error) {
+                    console.log(error.message);
                     return res.status(500).send("An error happened!");
                 }
             } else {

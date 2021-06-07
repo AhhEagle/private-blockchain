@@ -45,9 +45,9 @@ class Block {
             // Save in auxiliary variable the current block hash
         const currentBlockHash =  self.hash;           
             // Recalculate the hash of the 
-            self.hash = SHA256(JSON.stringify(self)).toString();
+            self.hash =  SHA256(JSON.stringify(self)).toString();
             // Comparing if the hashes changed
-            currentBlockHash === self.hash ? resolve(true) : reject(false);
+            currentBlockHash === self.hash ? resolve(currentBlockHash === self.hash) : reject(false);
             // Returning the Block is not valid
             
             // Returning the Block is valid
@@ -68,13 +68,13 @@ class Block {
         let self = this
         return new Promise((resolve, reject) =>{
         // Getting the encoded data saved in the Block
-        const encodeddata = this.body;
+        const encodeddata = self.body;
         // Decoding the data to retrieve the JSON representation of the object
         let datares =  hex2ascii(encodeddata);
         // Parse the data to an object to be retrieve.
         let res = JSON.parse(datares);
         // Resolve with the data if the object isn't the Genesis block
-        self.height > 0 ? resolve(res) : reject(new Error('This is the Genesis block'));
+        self.height > 0 ? resolve(res) : '';
         
     })
     }
