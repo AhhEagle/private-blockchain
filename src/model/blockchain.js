@@ -130,8 +130,6 @@ class Blockchain {
           const block = new BlockClass.Block({ star: star });
           block.owner = address;
           const addedBlock = await self._addBlock(block);
-          console.log(addedBlock);
-          console.log(addedBlock.owner);
           resolve(addedBlock);
         } else {
           reject("Invalid message");
