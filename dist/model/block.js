@@ -94,7 +94,7 @@ var Block = function () {
                 // Parse the data to an object to be retrieve.
                 var res = JSON.parse(datares);
                 // Resolve with the data if the object isn't the Genesis block
-                self.height > 0 ? resolve(res) : reject('Error');
+                self.height > 0 ? resolve(res) : reject(new Error('Error'));
             });
         }
     }]);

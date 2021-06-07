@@ -64,6 +64,7 @@ class Blockchain {
   _addBlock(block) {
     let self = this;
     return new Promise(async (resolve, reject) => {
+      try{
       block.height = self.chain.length;
       block.time = new Date()
         .getTime()
@@ -74,7 +75,14 @@ class Blockchain {
       block.hash = SHA256(JSON.stringify(block)).toString();
       self.chain.push(block);
       self.height++;
+      const errorLog = await self.validateChain();             
+      if(errorLog.length !== 0){         
+      resolve({message: "Blockchain is invalid", error: errorLog, status: false});                
+      }            
       resolve(block);
+      } catch(err){
+        reject(new Error(err))
+      }
     });
   }
 

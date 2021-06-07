@@ -95,13 +95,21 @@ var Blockchain = function () {
     value: function _addBlock(block) {
       var self = this;
       return new Promise(async function (resolve, reject) {
-        block.height = self.chain.length;
-        block.time = new Date().getTime().toString().slice(0, -3);
-        block.previousBlockHash = self.chain.length > 0 ? self.chain[self.chain.length - 1].hash : null;
-        block.hash = (0, _sha2.default)(JSON.stringify(block)).toString();
-        self.chain.push(block);
-        self.height++;
-        resolve(block);
+        try {
+          block.height = self.chain.length;
+          block.time = new Date().getTime().toString().slice(0, -3);
+          block.previousBlockHash = self.chain.length > 0 ? self.chain[self.chain.length - 1].hash : null;
+          block.hash = (0, _sha2.default)(JSON.stringify(block)).toString();
+          self.chain.push(block);
+          self.height++;
+          var errorLog = await self.validateChain();
+          if (errorLog.length !== 0) {
+            resolve({ message: "Blockchain is invalid", error: errorLog, status: false });
+          }
+          resolve(block);
+        } catch (err) {
+          reject(new Error(err));
+        }
       });
     }
 
@@ -252,51 +260,16 @@ var Blockchain = function () {
       var self = this;
       var errorLog = [];
       return new Promise(async function (resolve, reject) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          var _loop = function _loop() {
-            var block = _step.value;
-
-            if (block.validate()) {
-              if (block.height > 0) {
-                var previousBlock = self.chain.filter(function (el) {
-                  return el.height === block.height - 1;
-                })[0];
-                console.log(previousBlock);
-                if (block.previousBlockHash !== previousBlock.hash) {
-                  errorLog.push(block.height + " doesn't match ");
-                }
-              }
-            } else {
-              errorLog.push("Invalid Block");
+        self.chain.forEach(function (block) {
+          if (!block.validate()) {
+            errorLog.push('Block not verified');
+          } else {
+            if (block.previousBlockHash !== self.chain[self.chain.length - 1].hash) {
+              errorLog.push('Block not verified');
             }
-          };
-
-          for (var _iterator = self.chain[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            _loop();
+            resolve(errorLog);
           }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-
-        if (errorLog.length > 0) {
-          resolve(errorLog);
-        }
-        resolve("No errors found");
+        });
       });
     }
   }]);
