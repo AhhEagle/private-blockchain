@@ -75,6 +75,7 @@ class Blockchain {
       block.hash = SHA256(JSON.stringify(block)).toString();
       self.chain.push(block);
       self.height++;
+      //checking if the blockchain is valid
       const errorLog = await self.validateChain();             
       if(errorLog.length !== 0){         
       resolve({message: "Blockchain is invalid", error: errorLog, status: false});                
